@@ -1,4 +1,5 @@
 from random import choice
+import sys
 
 
 def open_and_read_file(file_path):
@@ -58,13 +59,18 @@ def make_text(chains):
     # concatenates to text until end is reached
     while current_key in chains:
         random_word = choice(chains[current_key])
-        text += (" " + random_word)
+        if text.endswith("\n") or text == "":
+            random_word = random_word.capitalize()
+            if random_word[-1].isalpha():
+                text += (" " + random_word)
+            else:
+                text += (" " + random_word + "\n")
         current_key = (current_key[1], random_word)
 
     return text
 
 
-input_path = "green-eggs.txt"
+input_path = sys.argv[1]
 
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
