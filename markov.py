@@ -53,21 +53,40 @@ def make_text(chains):
     text = ""
     # sets initial current key to a random key in dictionary
     current_key = choice(chains.keys())
+
+    to_new_line_punctuation = "!-.:;?"
     
     # while we have not reached the condtion of:
     # (current_key[1], Nothing here)
     # concatenates to text until end is reached
     while current_key in chains:
+        # picks the next word from the chains dictionary
         random_word = choice(chains[current_key])
-        if text.endswith("\n") or text == "":
-            random_word = random_word.capitalize()
-            if random_word[-1].isalpha():
-                text += (" " + random_word)
-            else:
-                text += (" " + random_word + "\n")
+        # puts the first word into text (without a space!)
+        if text == "":
+            text += (random_word + " ")
+        # if word has no punctuation, add a space and the word to the text
+        elif random_word[-1] not in to_new_line_punctuation:
+            text += (random_word + " ")
+        # if the word has new-line-punctuation, add space + word + new line
+        else:
+            text += (random_word + "\n")
+        # update the key to find the next word
         current_key = (current_key[1], random_word)
+    
+    # initializes an empty string to add to later
+    formatted_text = ""
 
-    return text
+    #splits the text by lines and puts each line in a list
+    text_lines = text.split('\n')
+
+    # iterates through the list and capitalizes each letter then adds back to the formatted string
+    for line in text_lines:
+        new_line = line.capitalize()
+        formatted_text += new_line + "\n"
+
+
+    return formatted_text
 
 
 input_path = sys.argv[1]
