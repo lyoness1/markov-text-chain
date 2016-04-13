@@ -14,7 +14,7 @@ def open_and_read_file(file_path):
     return contents
 
 
-def make_chains(text_string):
+def make_chains(text_string, num_key_words = 2):
     """Takes input text as string; returns _dictionary_ of markov chains.
 
     A chain will be a key that consists of a tuple of (word1, word2)
@@ -29,19 +29,39 @@ def make_chains(text_string):
     # initialize new dictionary
     chains = {}
 
-    # split on whitespace or newline delimeters
+    # split on whitespace delimeters
     words = text_string.split()
 
+
     # Iterates through words[], creates or appends word to key
-    for i in range(len(words)-2):
+    for i in range(len(words)-num_key_words):
+        # makes a tuple num_of_words long
+        empty_list_of_words_for_key = []
+
+        for x in range(num_key_words):
+            empty_list_of_words_for_key.append(words[i])
+        
+        key_tuple = tuple(empty_list_of_words_for_key)
+        print key_tuple
         # if key does not currently exist, append as follows into dict:
         # (tuple_item_0th, tuple_item_1th) = [following word]
-        if (words[i], words[i+1]) not in chains:
-            chains[(words[i], words[i+1])] = [words[i+2]]
+        if key_tuple not in chains:
+            chains[key_tuple] = [words[i + num_key_words]]
         else:
             # if it does exist, only append to the value
             # ex: [following word, other word that follows tuple combination]
-            chains[(words[i], words[i+1])].append(words[i+2])
+            chains[key_tuple].append(words[i + num_key_words])
+
+    # # Iterates through words[], creates or appends word to key
+    # for i in range(len(words)-num_key_words):
+    #     # if key does not currently exist, append as follows into dict:
+    #     # (tuple_item_0th, tuple_item_1th) = [following word]
+    #     if (words[i], words[i+1]) not in chains:
+    #         chains[(words[i], words[i+1])] = [words[i+2]]
+    #     else:
+    #         # if it does exist, only append to the value
+    #         # ex: [following word, other word that follows tuple combination]
+    #         chains[(words[i], words[i+1])].append(words[i+2])
 
     return chains
 
@@ -94,8 +114,10 @@ input_path = sys.argv[1]
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
 
+# make_key_code(input_text, 4)
+
 # Get a Markov chain
-chains = make_chains(input_text)
+chains = make_chains(input_text, 4)
 
 # Produce random text
 random_text = make_text(chains)
