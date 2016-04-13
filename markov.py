@@ -30,9 +30,9 @@ def make_chains(text_string, num_key_words):
     # intergerizes the input from str to int so it can be used in index math 
     num_key_words = int(num_key_words)
 
-    rid_of_colons = text_string.split(": ")
-    text_string = ""
-    text_string = text_string.join(rid_of_colons)
+    # rid_of_colons = text_string.split(": ")
+    # text_string = ""
+    # text_string = text_string.join(rid_of_colons)
     
     # initialize new dictionary
     chains = {}
@@ -44,11 +44,13 @@ def make_chains(text_string, num_key_words):
     for word_index in range(len(words) - num_key_words):
         # initializes an empty list to store the words that will create the key
         key_word_list = []
+        
         # iterates over an index to add the correct number of words to the key list. 
-        # tuplizes key
         for word_count in range(num_key_words):
             key_word_list.append(words[word_index + word_count])
-            current_key = tuple(key_word_list)
+        
+        # tuplizes key
+        current_key = tuple(key_word_list)
 
         # adds key to dictionary, or adds values to existing key
         if current_key not in chains:
@@ -72,11 +74,13 @@ def make_text(chains):
 
     # a string of punctuation that should end a line
     to_new_line_punctuation = "!-.:;?"
+
+    counter = 0
     
     # while we have not reached the condtion of:
     # (current_key[1], Nothing here)
     # concatenates to text until end is reached
-    while current_key in chains:
+    while counter <= 20:
         # picks the next word from the chains dictionary
         random_word = choice(chains[current_key])
         # puts the first word into text (without a space!)
@@ -88,6 +92,7 @@ def make_text(chains):
         # if the word ends with punctuation, have the word end the line. 
         else:
             text += (random_word + "\n")
+            counter += 1
         # update the key to find the next word. Listizes, slices, adds random word, re-tuplizes. 
         current_key_list = list(current_key)
         current_key_list = current_key_list[1:] + [random_word]
@@ -103,18 +108,20 @@ def make_text(chains):
     for line in text_lines:
         new_line = line.capitalize()
         formatted_text += new_line + "\n"
-        if formatted_text.count("\n") > 14:
-            break
+        # if formatted_text.count("\n") > 14:
+        #     break
 
 
     return formatted_text
 
+input_text = "" 
 
-# determines what txt file to read as input text 
-input_path = sys.argv[1]
+for i in range(1, len(sys.argv)):
+    # determines what txt file to read as input text 
+    input_path = sys.argv[i]
 
-# Open the file and turn it into one long string
-input_text = open_and_read_file(input_path)
+    # Open the file and turn it into one long string
+    input_text += open_and_read_file(input_path) + "\n"
 
 # establishes the number of words to put into the dictionary keys. More = better text. 
 key_length = raw_input("How many words would you like to use in your Markov key chain? ")
