@@ -11,6 +11,7 @@ def open_and_read_file(file_path):
 
     # returns a string of the entirety of the input file
     contents = open(file_path).read() 
+    
     return contents
 
 
@@ -29,6 +30,10 @@ def make_chains(text_string, num_key_words):
     # intergerizes the input from str to int so it can be used in index math 
     num_key_words = int(num_key_words)
 
+    rid_of_colons = text_string.split(": ")
+    text_string = ""
+    text_string = text_string.join(rid_of_colons)
+    
     # initialize new dictionary
     chains = {}
 

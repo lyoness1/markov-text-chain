@@ -1,0 +1,6 @@
+test
+
+ Word
+ :Another word
+: Word again
+ : and the last time
